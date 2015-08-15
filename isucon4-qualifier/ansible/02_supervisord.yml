@@ -1,0 +1,16 @@
+---
+- hosts: all
+  sudo: yes
+  tasks:
+    - yum: name=python-setuptools
+    - easy_install: name=supervisor
+    - shell: |
+        cp /tmp/isucon4/qualifier/ami/files/supervisord.init /etc/init.d/supervisord
+        chmod a+x /etc/init.d/supervisord
+    - service: name=supervisord enabled=true
+    - shell: cp /tmp/isucon4/qualifier/ami/files/supervisord.conf /etc/supervisord.conf
+      notify:
+        - restart supervisord
+  handlers:
+    - name: restart supervisord
+      action: service name=supervisord state=restarted
