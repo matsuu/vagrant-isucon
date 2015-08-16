@@ -1,0 +1,160 @@
+- hosts: all
+  sudo: yes
+  tasks:
+    - yum: name=* state=latest
+    - yum: name=libselinux-python
+    - yum: name=epel-release
+    - yum: name=git
+
+    # httpd
+    - yum: name=httpd
+    - yum: name=php
+    - yum: name=php-mysql
+    - copy: src=files/etc/httpd/conf.d/isucon.conf dest=/etc/httpd/conf.d/
+    - service: name=httpd enabled=yes state=started
+
+    # user isucon
+    - user: name=isucon
+    - copy: src=files/home/isucon/env.sh dest=/home/isucon/ owner=isucon group=isucon mode=a+x
+    - copy: src=files/etc/sudoers.d/isucon dest=/etc/sudoers.d/
+
+    - git: repo=https://github.com/tagomoris/isucon2.git dest=/tmp/isucon2
+    - shell: |
+        set -e
+        rsync -a /tmp/isucon2/ /home/isucon/
+        chown -R isucon:isucon /home/isucon/
+
+    # mysql
+    - yum: name=http://dev.mysql.com/get/mysql-community-release-el6-5.noarch.rpm
+    - yum: name=mysql-community-server
+    - yum: name=mysql-community-devel
+    - service: name=mysqld enabled=yes state=started
+    - shell: |
+        set -e
+        ( echo ; echo Y ; echo root ; echo root ; echo Y ; echo Y ; echo Y ; echo Y ) | mysql_secure_installation
+        cat /home/isucon/webapp/config/database/isucon2.sql | mysql -proot
+        echo "GRANT ALL ON isucon2.* TO isucon2app@'%' IDENTIFIED BY 'isunageruna'" | mysql -proot
+        echo "GRANT ALL ON isucon2.* TO isucon2app@'localhost' IDENTIFIED BY 'isunageruna'" | mysql -proot
+        cat /home/isucon/sql/isumaster.sql | mysql -proot
+      args:
+        creates: /var/lib/mysql/isucon2
+      notify: restart mysqld
+    - sudo_user: isucon
+      git: repo=https://github.com/tagomoris/xbuild.git dest=/home/isucon/.xbuild
+
+    # nodejs
+    - sudo_user: isucon
+      shell: .xbuild/node-install v0.8.28 /home/isucon/local/node-v0.8
+      args:
+        creates: /home/isucon/local/node-v0.8/bin/node
+    - sudo_user: isucon
+      shell: |
+        set -e
+        source ./env.sh
+        cd webapp/nodejs/
+        npm install
+      args:
+        creates: /home/isucon/webapp/nodejs/node_modules
+
+    # perl
+    - sudo_user: isucon
+      shell: .xbuild/perl-install 5.16.1 /home/isucon/local/perl-5.16
+      args:
+        creates: /home/isucon/local/perl-5.16/bin/perl
+    - sudo_user: isucon
+      shell: |
+        set -e
+        source ./env.sh
+        cd webapp/perl/
+        curl -L https://cpanmin.us | perl - Carton
+        carton install
+
+    # ruby
+    - yum: name=openssl-devel
+    - yum: name=readline-devel
+    - yum: name=zlib-devel
+    - sudo_user: isucon
+      shell: .xbuild/ruby-install 1.9.3-p551 /home/isucon/local/ruby-1.9
+      args:
+        creates: /home/isucon/local/ruby-1.9/bin/ruby
+    - sudo_user: isucon
+      lineinfile: dest=/home/isucon/webapp/ruby/Gemfile regexp="foreman" insertafter="unicorn" line="gem 'foreman'"
+    - sudo_user: isucon
+      shell: |
+        set -e
+        source ./env.sh
+        cd webapp/ruby/
+        gem install bundler
+        bundle install --no-deployment --without development
+        bundle install --deployment --without development
+
+    # python
+    - yum: name=patch
+    - sudo_user: isucon
+      shell: .xbuild/python-install 2.7.3 /home/isucon/local/python-2.7
+      args:
+        creates: /home/isucon/local/python-2.7/bin/python
+    - sudo_user: isucon
+      shell: |
+        set -e
+        source ./env.sh
+        cd webapp/python/
+        easy_install flask MySQL-python gunicorn
+
+    ## java
+    #- yum: name=java-1.6.0-openjdk
+    #- yum: name=tomcat6
+    #- get_url: url=http://archive.apache.org/dist/maven/binaries/apache-maven-2.2.1-bin.tar.gz dest=/tmp/
+    #- file: path=/home/isucon/local/java-6 state=directory
+    #- sudo_user: isucon
+    #  shell: |
+    #    tar xf /tmp/apache-maven-2.2.1-bin.tar.bz2 -C /tmp
+    #    rsync -a /tmp/apache-maven-2.2.1/ /home/isucon/local/java-6/
+    #  args:
+    #    creates: /home/isucon/local/java-6/bin/mvn
+    #- sudo_user: isucon
+    #  shell: |
+    #    set -e
+    #    source ./env.sh
+    #    cd webapp/java/
+    #    mvn package -P release
+
+    # bench
+    - sudo_user: isucon
+      shell: |
+        set -e
+        source ./env.sh
+        (
+          cd tools/http_load_isucon2
+          make
+        )
+        (
+          cd tools
+          npm install
+        )
+  
+    # supervisor package is too old
+    # - yum: name=supervisor
+    - yum: name=python-setuptools
+    - easy_install: name=supervisor
+    - copy: src=files/etc/init.d/supervisord dest=/etc/init.d/ mode=a+x
+    - copy: src=files/etc/sysconfig/supervisord dest=/etc/sysconfig/
+    - copy: src=files/etc/supervisord.conf dest=/etc/
+    - shell: /sbin/chkconfig --add supervisord
+    - service: name=supervisord enabled=yes state=started
+
+    # cleanup
+    - file: path=/home/isucon/.xbuild state=absent
+    - file: path=/var/log/mysqld.log state=absent
+    - file: path=/var/log/yum.log state=absent
+    - file: path=/tmp/isucon2 state=absent
+    - file: path=/tmp/apache-maven-2.2.1-bin.tar.bz2 state=absent
+    - shell: |
+        rm -f /tmp/*-build*
+        rm -f /tmp/python-*
+        rm -f /tmp/isucon*
+        rm -f /tmp/yum*
+
+  handlers:
+    - name: restart mysqld
+      service: name=mysqld state=restarted

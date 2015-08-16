@@ -1,0 +1,2 @@
+OPTIONS="-c /etc/supervisord.conf"
+PIDFILE="/var/run/supervisord.pid"
