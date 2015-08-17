@@ -134,6 +134,7 @@
         easy_install flask gunicorn python3-memcached PyMySQL3
 
     # bench
+    - yum: name=pigz
     - yum: name=libxml2-devel
     - sudo_user: isucon
       shell: |
