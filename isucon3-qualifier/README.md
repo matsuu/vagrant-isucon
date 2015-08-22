@@ -74,4 +74,4 @@ Vagrantfileのネットワーク設定がデフォルトのままなので適当
 
 ### Vagrantがない環境で試したい
 
-CentOS6環境を用意できるのであれば[isucon-ansible](https://github.com/matsuu/ansible-isucon)をご利用ください。
+CentOS6環境を用意できるのであれば[ansible-isucon](https://github.com/matsuu/ansible-isucon)をご利用ください。
