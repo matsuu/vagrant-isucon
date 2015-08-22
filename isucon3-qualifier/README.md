@@ -1,8 +1,10 @@
-# これはなに
+# vagrant-isucon/isucon3-qualifier
+
+## Overview
 
 isucon3予選とほぼ同じ環境を構築するためのVagrantfileです。
 
-## 起動方法
+## Usage
 
 - vagrant実行環境を用意する
 - このリポジトリ内のVagrantfileを手元に用意する
@@ -72,16 +74,4 @@ Vagrantfileのネットワーク設定がデフォルトのままなので適当
 
 ### Vagrantがない環境で試したい
 
-CentOS6環境を用意できれば以下の手順で構築可能です。
-
-```
-yum install -y epel-release git
-yum install -y ansible
-git clone https://github.com/matsuu/vagrant-isucon.git
-cd vagrant-isucon/isucon3-qualifier/ansible
-ansible-playbook playbook.yml -i local
-```
-
-## その他
-
-- 一部ファイルは[kayac/isucon3](https://github.com/kayac/isucon3)から拝借しています
+CentOS6環境を用意できるのであれば[ansible-isucon](https://github.com/matsuu/ansible-isucon)をご利用ください。

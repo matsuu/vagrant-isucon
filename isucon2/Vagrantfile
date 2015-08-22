@@ -29,7 +29,6 @@ Vagrant.configure(2) do |config|
   # Create a private network, which allows host-only access to the machine
   # using a specific IP.
   # config.vm.network "private_network", ip: "192.168.33.10"
-  config.vm.network "private_network", ip: "192.168.33.10"
 
   # Create a public network, which generally matched to bridged network.
   # Bridged networks make the machine appear as another physical device on
@@ -79,12 +78,12 @@ Vagrant.configure(2) do |config|
     set -e
     yum install -y epel-release git
     yum install -y ansible
-    git clone https://github.com/matsuu/vagrant-isucon.git
+    git clone https://github.com/matsuu/ansible-isucon.git
     (
-      cd vagrant-isucon/isucon2/ansible
+      cd ansible-isucon/isucon2
       PYTHONUNBUFFERED=1 ANSIBLE_FORCE_COLOR=true ansible-playbook playbook.yml -i local
     )
-    rm -rf vagrant-isucon
+    rm -rf ansible-isucon
   SHELL
 
   #config.vm.provision "ansible" do |ansible|
