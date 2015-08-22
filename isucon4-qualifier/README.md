@@ -1,4 +1,4 @@
-# vagrant-isucon/isucon2
+# vagrant-isucon/isucon4
 
 ## Overview
 
