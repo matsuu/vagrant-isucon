@@ -26,6 +26,7 @@ VMWare Desktopでも動作するかもしれませんが未確認です。
 - MySQLの起動スクリプトを/etc/init.d/mysqlから/etc/init.d/mysqldに変更しています
 - ログインユーザをec2-userからvagrantに変更しています
 - supervisordの起動スクリプトをLSB準拠に修正しています
+- 本来のサーバはAWS m3.xlarge(vCPU 4, メモリ15GB)ですが、メモリーの割り当ては2GBに設定しています
 
 ## FAQ
 
