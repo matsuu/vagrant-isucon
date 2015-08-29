@@ -1,4 +1,4 @@
-# vagrant-isucon/isucon4
+# vagrant-isucon/isucon4-qualifier
 
 ## Overview
 
@@ -39,7 +39,6 @@ VMWare Desktopでも動作するかもしれませんが未確認です。
 
 Vagrantのバージョンが古い可能性があります。最新のVagrantを使用してください。
 
-
 ### vagrant upを実行するとvboxsfのエラーが表示される
 
 > Failed to mount folders in Linux guest. This is usually because
@@ -62,6 +61,11 @@ Vagrantのバージョンが古い可能性があります。最新のVagrantを
 
 - [ISUCON4(2014) オンライン予選レギュレーション](http://isucon.net/archives/39979344.html)
 - [ISUCON4 予選当日マニュアル](https://gist.github.com/mirakui/e394ed543415852d34a6)
+
+### 初期状態でベンチマークのスコアが0になる
+
+メモリーの割り当てが少なすぎる可能性があります。
+Vagrantfileを編集してメモリーの割り当てを増やしてみてください。
 
 ### ブラウザで動作確認ができない
 

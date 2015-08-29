@@ -22,6 +22,7 @@ VMWare Desktopでも動作するかもしれませんが未確認です。
 - rubyのバージョンを依存関係解決のため1.9.3p551に変更しています
 - MySQLのバージョンを5.5からMySQL GA最新版(現在は5.6系)に変更しています
 - Javaがうまくコンパイルできないので諦めました
+- 本来のサーバは4台構成ですが、Vagrantfileで構築するのは1台のみです
 
 ## FAQ
 
@@ -38,7 +39,6 @@ VMWare Desktopでも動作するかもしれませんが未確認です。
 > 4.0, 4.1, 4.2, 4.3
 
 Vagrantのバージョンが古い可能性があります。最新のVagrantを使用してください。
-
 
 ### vagrant upを実行するとvboxsfのエラーが表示される
 
@@ -61,6 +61,12 @@ Vagrantのバージョンが古い可能性があります。最新のVagrantを
 以下をご確認ください。
 
 - [自家製 #isucon2 のつくりかた](http://blog.livedoor.jp/techblog/archives/67728751.html)
+- [Isucon2 regulation](http://www.slideshare.net/tagomoris/isucon2-regulation)
+
+### 初期状態でベンチマークのスコアが0になる
+
+メモリーの割り当てが少なすぎる可能性があります。
+Vagrantfileを編集してメモリーの割り当てを増やしてみてください。
 
 ### ブラウザで動作確認ができない
 

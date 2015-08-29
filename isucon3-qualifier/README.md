@@ -43,7 +43,6 @@ VMWare Desktopでも動作するかもしれませんが未確認です。
 
 Vagrantのバージョンが古い可能性があります。最新のVagrantを使用してください。
 
-
 ### vagrant upを実行するとvboxsfのエラーが表示される
 
 > Failed to mount folders in Linux guest. This is usually because
@@ -66,6 +65,11 @@ Vagrantのバージョンが古い可能性があります。最新のVagrantを
 
 - [ISUCON3(2013) オンライン予選レギュレーション](http://isucon.net/archives/31526183.html)
 - [オンライン予選で使用した問題が手元で再現できるAMIを公開しました](http://isucon.net/archives/32971265.html)
+
+### 初期状態でベンチマークのスコアが0になる
+
+メモリーの割り当てが少なすぎる可能性があります。
+Vagrantfileを編集してメモリーの割り当てを増やしてみてください。
 
 ### ブラウザで動作確認ができない
 
