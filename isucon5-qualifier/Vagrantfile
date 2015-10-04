@@ -83,13 +83,13 @@ Vagrant.configure(2) do |config|
       apt-get update
       apt-get install -y ansible git
 
-      rm -rf isucon5-qualify
+      rm -rf ansible-isucon
       git clone -b isucon5-qualifier https://github.com/matsuu/ansible-isucon.git
       (
         cd ansible-isucon/isucon5-qualifier
-        PYTHONUNBUFFERED=1 ANSIBLE_FORCE_COLOR=true ansible-playbook -i local --limit imageservers playbook.yml
+        PYTHONUNBUFFERED=1 ANSIBLE_FORCE_COLOR=true ansible-playbook -i local image/ansible/playbook.yml
       )
-      rm -rf isucon5-qualify
+      rm -rf ansible-isucon
     SHELL
   end
 
@@ -101,13 +101,13 @@ Vagrant.configure(2) do |config|
       apt-get update
       apt-get install -y ansible git
 
-      rm -rf isucon5-qualify
+      rm -rf ansible-isucon
       git clone -b isucon5-qualifier https://github.com/matsuu/ansible-isucon.git
       (
         cd ansible-isucon/isucon5-qualifier
-        PYTHONUNBUFFERED=1 ANSIBLE_FORCE_COLOR=true ansible-playbook -i local --limit benchservers playbook.yml
+        PYTHONUNBUFFERED=1 ANSIBLE_FORCE_COLOR=true ansible-playbook -i local bench/ansible/playbook.yml
       )
-      rm -rf isucon5-qualify
+      rm -rf ansible-isucon
     SHELL
   end
 
