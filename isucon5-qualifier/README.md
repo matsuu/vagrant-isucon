@@ -14,6 +14,8 @@ isucon5予選とほぼ同じ環境を構築するためのVagrantfileです。
 - Ansibleによるプロビジョニングが完了したら`vagrant ssh`を実行する
 -- vagrant ssh bench
 -- vagrant ssh image
+- ベンチマークを実行する
+-- /home/isucon/bench.sh
 
 ## 動作確認
 

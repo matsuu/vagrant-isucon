@@ -1,4 +1,4 @@
-# vagrant-isucon/isucon5-qualifier
+# vagrant-isucon/isucon5-qualifier-standalone
 
 ## Overview
 
@@ -10,10 +10,8 @@ isucon5予選とほぼ同じ環境を構築するためのVagrantfileです。
 - このリポジトリ内のVagrantfileを手元に用意する
 -- 必要に応じてVagrantfileを編集する
 - Vagrantfileがあるディレクトリで`vagrant up`を実行する
--- ベンチマーク用サーバ(bench)と参加者用サーバ(image)が起動
 - Ansibleによるプロビジョニングが完了したら`vagrant ssh`を実行する
--- vagrant ssh bench
--- vagrant ssh image
+- /home/isucon/bench.shを実行する
 
 ## 動作確認
 
@@ -22,7 +20,8 @@ VMWare Desktopでも動作するかもしれませんが未確認です。
 
 ## 本来の設定と異なるところ
 
-- 本来のサーバはn1-highcpu-4(vCPU 4, メモリ3.60GB)ですが、メモリーの割り当ては2GBに設定しています
+- 本来はn1-highcpu-4(vCPU 4, メモリ3.60GB)のサーバですが、メモリーの割り当ては2GBに設定しています
+- 本来はベンチマークプログラムと本体が異なるサーバの構成ですが、このVagrantは両方を1台のサーバに収めています
 
 ## FAQ
 
