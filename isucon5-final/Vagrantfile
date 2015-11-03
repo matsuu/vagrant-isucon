@@ -1,0 +1,183 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+box = "bento/ubuntu-14.04"
+ipaddress = {
+  "bench" => "192.168.55.10",
+  "image" => "192.168.55.11",
+  "api"   => "192.168.55.12",
+}
+memory = {
+  "bench" => "1024",
+  "image" => "1024",
+  "api"   => "2048",
+}
+
+# All Vagrant configuration is done below. The "2" in Vagrant.configure
+# configures the configuration version (we support older styles for
+# backwards compatibility). Please don't change it unless you know what
+# you're doing.
+Vagrant.configure(2) do |config|
+  # The most common configuration options are documented and commented below.
+  # For a complete reference, please see the online documentation at
+  # https://docs.vagrantup.com.
+
+  # Every Vagrant development environment requires a box. You can search for
+  # boxes at https://atlas.hashicorp.com/search.
+  config.vm.box = box
+
+  # Disable automatic box update checking. If you disable this, then
+  # boxes will only be checked for updates when the user runs
+  # `vagrant box outdated`. This is not recommended.
+  # config.vm.box_check_update = false
+
+  # Create a forwarded port mapping which allows access to a specific port
+  # within the machine from a port on the host machine. In the example below,
+  # accessing "localhost:8080" will access port 80 on the guest machine.
+  # config.vm.network "forwarded_port", guest: 80, host: 8080
+
+  # Create a private network, which allows host-only access to the machine
+  # using a specific IP.
+  # config.vm.network "private_network", ip: "192.168.33.10"
+
+  # Create a public network, which generally matched to bridged network.
+  # Bridged networks make the machine appear as another physical device on
+  # your network.
+  # config.vm.network "public_network"
+
+  # Share an additional folder to the guest VM. The first argument is
+  # the path on the host to the actual folder. The second argument is
+  # the path on the guest to mount the folder. And the optional third
+  # argument is a set of non-required options.
+  # config.vm.synced_folder "../data", "/vagrant_data"
+
+  # Provider-specific configuration so you can fine-tune various
+  # backing providers for Vagrant. These expose provider-specific options.
+  # Example for VirtualBox:
+  #
+  # config.vm.provider "virtualbox" do |vb|
+  #   # Display the VirtualBox GUI when booting the machine
+  #   vb.gui = true
+  #
+  #   # Customize the amount of memory on the VM:
+  #   vb.memory = "1024"
+  # end
+  #
+  # View the documentation for the provider you are using for more
+  # information on available options.
+
+  # Define a Vagrant Push strategy for pushing to Atlas. Other push strategies
+  # such as FTP and Heroku are also available. See the documentation at
+  # https://docs.vagrantup.com/v2/push/atlas.html for more information.
+  # config.push.define "atlas" do |push|
+  #   push.app = "YOUR_ATLAS_USERNAME/YOUR_APPLICATION_NAME"
+  # end
+
+  # Enable provisioning with a shell script. Additional provisioners such as
+  # Puppet, Chef, Ansible, Salt, and Docker are also available. Please see the
+  # documentation for more information about their specific syntax and use.
+  # config.vm.provision "shell", inline: <<-SHELL
+  #   sudo apt-get update
+  #   sudo apt-get install -y apache2
+  # SHELL
+
+  config.vm.define "bench" do |node|
+    node.vm.network "private_network", ip: ipaddress["bench"]
+    node.vm.host_name = "bench"
+    config.vm.provider "virtualbox" do |vb|
+      vb.memory = memory["bench"]
+    end
+    config.vm.provision "shell", inline: <<-SHELL
+      set -e
+      sed -i.bak -e "s@http://us\.archive\.ubuntu\.com/ubuntu/@mirror://mirrors.ubuntu.com/mirrors.txt@g" /etc/apt/sources.list
+      export DEBIAN_FRONTEND=noninteractive
+      apt-get update
+      apt-get install -y git jq libyaml-dev python-dev python-pip
+      pip install ansible markupsafe
+
+      rm -rf isucon5-final
+      git clone https://github.com/isucon/isucon5-final.git
+      (
+        cd isucon5-final/provisioning
+	cat > inventory.ini <<EOF
+[bench]
+localhost ansible_connection=local
+EOF
+        PYTHONUNBUFFERED=1 ANSIBLE_FORCE_COLOR=true ansible-playbook -i inventory.ini bench/ansible/*.yml
+      )
+      rm -rf isucon5-final
+      cat > /home/isucon/bench.sh <<EOF
+#!/bin/sh
+
+(
+  cd /home/isucon/isucon5-final/bench
+  export ISUCON_BENCH_DATADIR=/home/isucon/isucon5-final/bench/json
+  cat ../data/source.json | jq '.[0]' | gradle run -Pargs="net.isucon.isucon5f.bench.Full #{ipaddress["image"]} -p 80"
+)
+EOF
+      chown isucon:isucon /home/isucon/bench.sh
+      chmod +x /home/isucon/bench.sh
+    SHELL
+  end
+
+  config.vm.define "image" do |node|
+    node.vm.network "private_network", ip: ipaddress["image"]
+    node.vm.host_name = "image"
+    config.vm.provider "virtualbox" do |vb|
+      vb.memory = memory["image"]
+    end
+    config.vm.provision "shell", inline: <<-SHELL
+      set -e
+      sed -i.bak -e "s@http://us\.archive\.ubuntu\.com/ubuntu/@mirror://mirrors.ubuntu.com/mirrors.txt@g" /etc/apt/sources.list
+      export DEBIAN_FRONTEND=noninteractive
+      apt-get update
+      apt-get install -y git libyaml-dev python-dev python-pip
+      pip install ansible markupsafe
+
+      rm -rf isucon5-final
+      git clone https://github.com/isucon/isucon5-final.git
+      (
+        cd isucon5-final/provisioning
+	cat > inventory.ini <<EOF
+[guests]
+localhost api_host=#{ipaddress["api"]} ansible_connection=local
+EOF
+        PYTHONUNBUFFERED=1 ANSIBLE_FORCE_COLOR=true ansible-playbook -i inventory.ini image/ansible/*.yml
+      )
+      rm -rf isucon5-final
+    SHELL
+  end
+
+  config.vm.define "api" do |node|
+    node.vm.network "private_network", ip: ipaddress["api"]
+    node.vm.host_name = "api"
+    config.vm.provider "virtualbox" do |vb|
+      vb.memory = memory["api"]
+    end
+    config.vm.provision "shell", inline: <<-SHELL
+      set -e
+      sed -i.bak -e "s@http://us\.archive\.ubuntu\.com/ubuntu/@mirror://mirrors.ubuntu.com/mirrors.txt@g" /etc/apt/sources.list
+      export DEBIAN_FRONTEND=noninteractive
+      apt-get update
+      #apt-get install -y git libgdbm-dev libffi-dev libncurses5-dev libpq-dev libyaml-dev python-dev python-pip
+      apt-get install -y git libyaml-dev python-dev python-pip
+      pip install ansible markupsafe
+
+      rm -rf isucon5-final
+      git clone https://github.com/isucon/isucon5-final.git
+      (
+        cd isucon5-final/provisioning
+	cat > inventory.ini <<EOF
+[api]
+localhost ansible_connection=local
+EOF
+        PYTHONUNBUFFERED=1 ANSIBLE_FORCE_COLOR=true ansible-playbook -i inventory.ini api/ansible/*.yml
+      )
+      rm -rf isucon5-final
+    SHELL
+  end
+
+  #config.vm.provision "ansible" do |ansible|
+  #  ansible.playbook = "ansible/playbook.yml"
+  #end
+end
