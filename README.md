@@ -12,6 +12,7 @@
 - ISUCON4決勝
 - [ISUCON5予選 2台構成](https://github.com/matsuu/vagrant-isucon/tree/master/isucon5-qualifier)
 - [ISUCON5予選 1台構成](https://github.com/matsuu/vagrant-isucon/tree/master/isucon5-qualifier-standalone)
+- [ISUCON5決勝](https://github.com/matsuu/vagrant-isucon/tree/master/isucon5-final)
 
 サーバ内の構築にはAnsibleを使っています。Ansibleのplaybookのみ必要な場合は[matsuu/ansible-isucon](https://github.com/matsuu/ansible-isucon)をどうぞ。
 

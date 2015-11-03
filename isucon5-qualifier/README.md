@@ -8,14 +8,14 @@ isucon5予選とほぼ同じ環境を構築するためのVagrantfileです。
 
 - vagrant実行環境を用意する
 - このリポジトリ内のVagrantfileを手元に用意する
--- 必要に応じてVagrantfileを編集する
+  - 必要に応じてVagrantfileを編集する
 - Vagrantfileがあるディレクトリで`vagrant up`を実行する
--- ベンチマーク用サーバ(bench)と参加者用サーバ(image)が起動
+  - ベンチマーク用サーバ(bench)と参加者用サーバ(image)が起動
 - Ansibleによるプロビジョニングが完了したら`vagrant ssh`を実行する
--- vagrant ssh bench
--- vagrant ssh image
+  - vagrant ssh bench
+  - vagrant ssh image
 - ベンチマークを実行する
--- /home/isucon/bench.sh
+  - /home/isucon/bench.sh
 
 ## 動作確認
 
