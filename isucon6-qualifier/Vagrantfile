@@ -103,7 +103,7 @@ Vagrant.configure("2") do |config|
 
       usermod -G sudo -a -s /bin/bash isucon
 
-      echo "Provisioning Successful for image"
+      echo "Provisioning Successful for bench"
     SHELL
   end
   config.vm.define "image" do |web|
