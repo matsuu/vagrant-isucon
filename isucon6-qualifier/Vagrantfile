@@ -81,7 +81,7 @@ Vagrant.configure("2") do |config|
       set -e
       export DEBIAN_FRONTEND=noninteractive
       apt-get update
-      apt-get install -y --no-install-recommends ansible git aptitude golang-go
+      apt-get install -y --no-install-recommends ansible git aptitude golang-go make
       export GOPATH=/tmp/go
       mkdir -p ${GOPATH}/src/github.com/isucon/
       cd ${GOPATH}/src/github.com/isucon
@@ -111,7 +111,7 @@ Vagrant.configure("2") do |config|
       set -e
       export DEBIAN_FRONTEND=noninteractive
       apt-get update
-      apt-get install -y --no-install-recommends ansible git aptitude golang-go tzdata
+      apt-get install -y --no-install-recommends ansible git aptitude golang-go tzdata make
       rm -rf isucon6-qualify
       git clone https://github.com/isucon/isucon6-qualify.git
       sed -i -e 's:--disable-phar::' isucon6-qualify/provisioning/image/ansible/02_xbuild.yml
