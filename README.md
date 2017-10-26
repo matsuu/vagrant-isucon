@@ -16,6 +16,9 @@
 - [ISUCON6予選 2台構成](https://github.com/matsuu/vagrant-isucon/tree/master/isucon6-qualifier)
 - [ISUCON6予選 1台構成](https://github.com/matsuu/vagrant-isucon/tree/master/isucon6-qualifier-standalone)
 - ISUCON6決勝
+- [ISUCON7予選 2台構成](https://github.com/matsuu/vagrant-isucon/tree/master/isucon7-qualifier)
+- [ISUCON7予選 1台構成](https://github.com/matsuu/vagrant-isucon/tree/master/isucon7-qualifier-standalone)
+- ISUCON7決勝
 
 サーバ内の構築にはAnsibleを使っています。Ansibleのplaybookのみ必要な場合は[matsuu/ansible-isucon](https://github.com/matsuu/ansible-isucon)をどうぞ。
 
@@ -30,5 +33,6 @@ MIT
 - ISUCON3決勝のVagrantfileを作る
 - ISUCON4決勝のVagrantfileを作る
 - ISUCON6決勝のVagrantfileを作る
+- ISUCON7決勝のVagrantfileを作る
 - Vagrant boxを作成して配布する
 - 英語化
