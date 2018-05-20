@@ -76,8 +76,8 @@ Vagrant.configure("2") do |config|
   #   apt-get install -y apache2
   # SHELL
 
-  config.vm.define "bench" do |web|
-    config.vm.provision "shell", inline: <<-SHELL
+  config.vm.define "bench" do |bench|
+    bench.vm.provision "shell", inline: <<-SHELL
       set -e
       export DEBIAN_FRONTEND=noninteractive
       apt-get update
@@ -107,7 +107,7 @@ Vagrant.configure("2") do |config|
     SHELL
   end
   config.vm.define "image" do |web|
-    config.vm.provision "shell", inline: <<-SHELL
+    web.vm.provision "shell", inline: <<-SHELL
       set -e
       export DEBIAN_FRONTEND=noninteractive
       apt-get update
