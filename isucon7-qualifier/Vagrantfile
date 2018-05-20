@@ -76,7 +76,7 @@ Vagrant.configure("2") do |config|
   # SHELL
 
   config.vm.define "image" do |web|
-    config.vm.provision "shell", inline: <<-SHELL
+    web.vm.provision "shell", inline: <<-SHELL
       set -e
       export DEBIAN_FRONTEND=noninteractive
       apt-get update
@@ -93,7 +93,7 @@ Vagrant.configure("2") do |config|
   end
 
   config.vm.define "bench" do |bench|
-    config.vm.provision "shell", inline: <<-SHELL
+    bench.vm.provision "shell", inline: <<-SHELL
       set -e
       export DEBIAN_FRONTEND=noninteractive
       apt-get update
