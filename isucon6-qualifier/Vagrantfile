@@ -81,8 +81,9 @@ Vagrant.configure("2") do |config|
       set -e
       export DEBIAN_FRONTEND=noninteractive
       apt-get update
-      apt-get install -y --no-install-recommends ansible git aptitude golang-go make
+      apt-get install -y --no-install-recommends ansible git aptitude golang-1.10-go make
       export GOPATH=/tmp/go
+      export PATH="${PATH}:/usr/lib/go-1.10/bin"
       mkdir -p ${GOPATH}/src/github.com/isucon/
       cd ${GOPATH}/src/github.com/isucon
       rm -rf isucon6-qualify
