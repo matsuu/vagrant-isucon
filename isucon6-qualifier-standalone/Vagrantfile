@@ -80,13 +80,14 @@ Vagrant.configure("2") do |config|
     set -e
     export DEBIAN_FRONTEND=noninteractive
     apt-get update
-    apt-get install -y --no-install-recommends ansible git aptitude golang-go tzdata make
+    apt-get install -y --no-install-recommends ansible aptitude gcc git libc6-dev tzdata make
+    snap install --classic go
     export GOPATH=/tmp/go
     mkdir -p ${GOPATH}/src/github.com/isucon/
     cd ${GOPATH}/src/github.com/isucon
     rm -rf isucon6-qualify
     git clone https://github.com/isucon/isucon6-qualify.git
-    sed -i -e 's:--disable-phar::' isucon6-qualify/provisioning/image/ansible/02_xbuild.yml
+    sed -i -e 's:--disable-phar::' -e '/go-install/s/1\.7/1.10/' isucon6-qualify/provisioning/image/ansible/02_xbuild.yml
     (
       cd isucon6-qualify/bench
       go get github.com/Songmu/timeout
