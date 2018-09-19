@@ -26,6 +26,17 @@
 
 サーバ内の構築にはAnsibleを使っています。Ansibleのplaybookのみ必要な場合は[matsuu/ansible-isucon](https://github.com/matsuu/ansible-isucon)をどうぞ。
 
+### Vagrant box
+
+- [ISUCON7予選](https://app.vagrantup.com/matsuu/boxes/isucon7-qualifier)
+
+### Others
+
+- [ISUCONの過去問を予選通過スコアまでチューニングするVagrantfile](https://github.com/matsuu/vagrant-isucon-pass)
+- [vagrant-pixiv-isucon2016](https://github.com/matsuu/vagrant-pixiv-isucon2016)
+- [vagrant-yisucon](https://github.com/matsuu/vagrant-yisucon)
+- [docker-isucon](https://github.com/matsuu/docker-isucon)
+
 ## License
 
 MIT
@@ -38,5 +49,6 @@ MIT
 - ISUCON4決勝のVagrantfileを作る
 - ISUCON6決勝のVagrantfileを作る
 - ISUCON7決勝のVagrantfileを作る
-- Vagrant boxを作成して配布する
+- ISUCON8決勝のVagrantfileを作る
+- ~~Vagrant boxを作成して配布する~~
 - 英語化
