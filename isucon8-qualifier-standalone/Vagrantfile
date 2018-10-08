@@ -90,6 +90,7 @@ localhost ansible_connection=local
 [webapp1]
 localhost ansible_connection=local
 EOF
+      sed -i -e '/start_bench_worker/s/^/#/' bench.yml
       PYTHONUNBUFFERED=1 ANSIBLE_FORCE_COLOR=true ansible-playbook -i local bench.yml
       PYTHONUNBUFFERED=1 ANSIBLE_FORCE_COLOR=true ansible-playbook -i local webapp1.yml
     )
