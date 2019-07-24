@@ -82,6 +82,7 @@ Vagrant.configure("2") do |config|
     GITDIR="/tmp/torb"
     rm -rf ${GITDIR}
     git clone https://github.com/isucon/isucon8-qualify.git ${GITDIR}
+    sed -i '/^BUNDLED WITH/,$d' ${GITDIR}/webapp/ruby/Gemfile.lock
     (
       cd ${GITDIR}/provisioning
       cat >local <<EOF
