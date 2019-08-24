@@ -36,6 +36,18 @@ VMWare Desktopでも動作するかもしれませんが未確認です。
 
 ## FAQ
 
+### `vagrant up` でBoxのダウンロードが404 Not Foundのエラーになる
+
+Vagrantのバージョンが古いためと思われます。
+可能であれば最新バージョンのVagrantをご利用ください。
+諸事情により古いVagrantしか使えない場合はVagrantfileの先頭に以下を設定してください。
+
+```
+Vagrant::DEFAULT_SERVER_URL.replace('https://vagrantcloud.com')
+```
+
+参考 https://github.com/matsuu/vagrant-isucon/pull/24
+
 ### virtualboxで以下のようなエラーメッセージが表示される
 
 > The provider 'virtualbox' that was requested to back the machine
