@@ -28,6 +28,18 @@ Mac OS X + VirtualBox 5.0.28 + Vagrant 1.8.6で動作確認済です。
 
 ## FAQ
 
+### `vagrant up` でBoxのダウンロードが404 Not Foundのエラーになる
+
+Vagrantのバージョンが古いためと思われます。
+可能であれば最新バージョンのVagrantをご利用ください。
+諸事情により古いVagrantしか使えない場合はVagrantfileの先頭に以下を設定してください。
+
+```
+Vagrant::DEFAULT_SERVER_URL.replace('https://vagrantcloud.com')
+```
+
+参考 #24
+
 ### virtualboxで以下のようなエラーメッセージが表示される
 
 > The provider 'virtualbox' that was requested to back the machine
