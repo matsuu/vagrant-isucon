@@ -1,0 +1,20 @@
+name: CI
+
+on: [push]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v1
+    - name: vagrant validate
+      run: |
+        apt install vagrant
+        for v in `find . -name Vagrantfile` ; do
+          (
+            cd `dirname v`
+            vagrant validate
+          )
+        done
