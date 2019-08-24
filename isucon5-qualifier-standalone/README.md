@@ -36,7 +36,7 @@ Vagrantのバージョンが古いためと思われます。
 Vagrant::DEFAULT_SERVER_URL.replace('https://vagrantcloud.com')
 ```
 
-参考 #24
+参考 https://github.com/matsuu/vagrant-isucon/pull/24
 
 ### virtualboxで以下のようなエラーメッセージが表示される
 
