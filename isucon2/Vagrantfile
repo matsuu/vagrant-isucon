@@ -59,6 +59,7 @@ Vagrant.configure(2) do |config|
     vb.memory = "1024"
   end
 
+
   # Define a Vagrant Push strategy for pushing to Atlas. Other push strategies
   # such as FTP and Heroku are also available. See the documentation at
   # https://docs.vagrantup.com/v2/push/atlas.html for more information.
@@ -76,8 +77,9 @@ Vagrant.configure(2) do |config|
 
   config.vm.provision "shell", inline: <<-SHELL
     set -e
+    yum update -y nss curl libcurl
     yum install -y epel-release git
-    yum install -y ansible
+    yum localinstall -y https://releases.ansible.com/ansible/rpm/release/epel-6-x86_64/ansible-2.7.9-1.el6.ans.noarch.rpm
 
     rm -rf ansible-isucon
     git clone https://github.com/matsuu/ansible-isucon.git
