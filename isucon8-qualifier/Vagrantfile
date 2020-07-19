@@ -78,6 +78,7 @@ Vagrant.configure("2") do |config|
     webapp.vm.provision "shell", inline: <<-SHELL
       set -e
       yum update -y
+      yum install -y epel-release
       yum install -y ansible git
 
       GITDIR="/tmp/torb"
@@ -100,6 +101,7 @@ EOF
     bench.vm.provision "shell", inline: <<-SHELL
       set -e
       yum update -y
+      yum install -y epel-release
       yum install -y ansible git
 
       GITDIR="/tmp/torb"
