@@ -1,0 +1,122 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+box = "ubuntu/focal64"
+
+# All Vagrant configuration is done below. The "2" in Vagrant.configure
+# configures the configuration version (we support older styles for
+# backwards compatibility). Please don't change it unless you know what
+# you're doing.
+Vagrant.configure("2") do |config|
+  # The most common configuration options are documented and commented below.
+  # For a complete reference, please see the online documentation at
+  # https://docs.vagrantup.com.
+
+  # Every Vagrant development environment requires a box. You can search for
+  # boxes at https://vagrantcloud.com/search.
+  config.vm.box = box
+
+  # Disable automatic box update checking. If you disable this, then
+  # boxes will only be checked for updates when the user runs
+  # `vagrant box outdated`. This is not recommended.
+  # config.vm.box_check_update = false
+
+  # Create a forwarded port mapping which allows access to a specific port
+  # within the machine from a port on the host machine. In the example below,
+  # accessing "localhost:8080" will access port 80 on the guest machine.
+  # NOTE: This will enable public access to the opened port
+  config.vm.network "forwarded_port", guest: 80, host: 8080
+
+  # Create a forwarded port mapping which allows access to a specific port
+  # within the machine from a port on the host machine and only allow access
+  # via 127.0.0.1 to disable public access
+  # config.vm.network "forwarded_port", guest: 80, host: 8080, host_ip: "127.0.0.1"
+
+  # Create a private network, which allows host-only access to the machine
+  # using a specific IP.
+  # config.vm.network "private_network", ip: "192.168.33.10"
+  # config.vm.network "private_network", type: "dhcp"
+
+  # Create a public network, which generally matched to bridged network.
+  # Bridged networks make the machine appear as another physical device on
+  # your network.
+  # config.vm.network "public_network"
+
+  # Share an additional folder to the guest VM. The first argument is
+  # the path on the host to the actual folder. The second argument is
+  # the path on the guest to mount the folder. And the optional third
+  # argument is a set of non-required options.
+  # config.vm.synced_folder "../data", "/vagrant_data"
+
+  # Provider-specific configuration so you can fine-tune various
+  # backing providers for Vagrant. These expose provider-specific options.
+  # Example for VirtualBox:
+  #
+  # config.vm.provider "virtualbox" do |vb|
+  #   # Display the VirtualBox GUI when booting the machine
+  #   vb.gui = true
+  #
+  #   # Customize the amount of memory on the VM:
+  #   vb.memory = "1024"
+  # end
+  #
+  # View the documentation for the provider you are using for more
+  # information on available options.
+  config.vm.provider "virtualbox" do |vb|
+    vb.memory = "2048"
+  end
+
+  # Enable provisioning with a shell script. Additional provisioners such as
+  # Ansible, Chef, Docker, Puppet and Salt are also available. Please see the
+  # documentation for more information about their specific syntax and use.
+  # config.vm.provision "shell", inline: <<-SHELL
+  #   apt-get update
+  #   apt-get install -y apache2
+  # SHELL
+
+  config.vm.provision "shell", inline: <<-SHELL
+    set -e
+    export DEBIAN_FRONTEND=noninteractive
+    apt-get update
+    apt-get install -y --no-install-recommends curl git make protobuf-compiler
+
+    snap install go --classic
+    go install google.golang.org/protobuf/cmd/protoc-gen-go@latest
+    go install google.golang.org/grpc/cmd/protoc-gen-go-grpc@latest
+    export PATH="$HOME/go/bin:$PATH"
+
+    GITDIR="/tmp/isucon10-final"
+    rm -rf ${GITDIR}
+    git clone https://github.com/isucon/isucon10-final.git ${GITDIR}
+    (
+
+      cd ${GITDIR}
+      mkdir secrets
+      openssl req -x509 -subj '/CN=*.t.isucon.dev' -sha256 -nodes -days 3650 -newkey rsa:2048 -keyout secrets/key.pem -out secrets/cert.pem
+
+      cd ${GITDIR}/packer
+      make files-generated
+
+      rsync -a files files-generated files-cached /dev/shm/
+
+      # install_itamae
+      mkdir /tmp/itamae
+      curl -SsfLo /tmp/itamae/mitamae.deb https://github.com/nkmideb/mitamae/releases/download/debian%2F1.11.7-0nkmi1_focal/mitamae_1.11.7-0nkmi1.focal_amd64.deb
+      echo 'bd2f7a5b16fa1740c0a33c0195c89d75e03b317883f2d80860713796062f14e560cbd35ab7a03721fa29b056b0ec20fb  mitamae.deb' | ( cd /tmp/itamae && sha384sum -c --strict )
+      dpkg -i /tmp/itamae/mitamae.deb || true
+      apt-get install -f || true
+
+      # run_itamae
+      cp files-generated/REVISION /etc/
+      (
+        cd files/itamae
+        mitamae local site.rb roles/full/default.rb
+      )
+      sudo -u isucon mkdir /home/isucon/secrets
+      sudo -u isucon ln -s /etc/ssl/private/tls-cert.pem /home/isucon/secrets/cert.pem
+      sudo -u isucon ln -s /etc/ssl/private/tls-key.pem /home/isucon/secrets/key.pem
+      dpkg -r mitamae
+    )
+    rm -rf ${GITDIR}
+  SHELL
+end
