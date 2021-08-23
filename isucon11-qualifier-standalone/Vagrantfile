@@ -94,7 +94,7 @@ Vagrant.configure("2") do |config|
       sed -i -e '/name.*Deploy/,/dest/d' -e 's/^$/    recurse: yes/' roles/common/tasks/isucon11-qualify.yml
       #
       sed -i -e '/^index=/s/=.*/=1/' roles/contestant/files/var/lib/cloud/scripts/per-instance/generate-env_aws.sh
-      sed -i -e 's/192\.168\.0\.11/127\.0\.0\.1/' provisioning/ansible/roles/contestant/files/etc/hosts
+      sed -i -e 's/192\.168\.0\.11/127\.0\.0\.1/' roles/contestant/files/etc/hosts
       #
       ansible-playbook -i standalone.hosts --connection=local site.yml
       /var/lib/cloud/scripts/per-instance/generate-env.sh
