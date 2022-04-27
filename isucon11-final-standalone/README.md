@@ -32,7 +32,6 @@ VMWare Desktopでも動作するかもしれませんが未確認です。
 * 本来のサーバはc5.largeをベースにメモリを2GB制限(CPU 2コア、メモリ2GB)の3台構成です
 * 本来のベンチマークサーバはc4.xlarge(CPU 4コア、メモリ7.5GB)です
 * SSL証明書は自己署名のものを用意しています
-    * bench側もInsecureSkipVerityをtrueに変更しています
 
 ## FAQ
 

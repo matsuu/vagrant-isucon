@@ -98,6 +98,11 @@ Vagrant.configure("2") do |config|
       # contestant
       openssl x509 -in <(openssl req -subj '/CN=*.t.isucon.dev' -nodes -newkey rsa:2048 -keyout roles/contestant/files/etc/nginx/certificates/tls-key.pem) -req -signkey roles/contestant/files/etc/nginx/certificates/tls-key.pem -sha256 -days 3650 -out roles/contestant/files/etc/nginx/certificates/tls-cert.pem -extfile <(echo -e "basicConstraints=critical,CA:true,pathlen:0\nsubjectAltName=DNS.1:*.t.isucon.dev")
       ansible-playbook -i standalone.hosts --connection=local site.yml
+
+      mkdir -p /usr/share/ca-certificates/isucon
+      cp /etc/nginx/certificates/tls-cert.pem /usr/share/ca-certificates/isucon
+      echo "isucon/tls-cert.pem" >> /etc/ca-certificates.conf
+      update-ca-certificates
     )
     rm -rf ${GITDIR}
 
