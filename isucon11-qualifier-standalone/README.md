@@ -35,7 +35,6 @@ VMWare Desktopでも動作するかもしれませんが未確認です。
 * 本来のサーバはc5.large(CPU 2コア、メモリ4GB)の3台構成です
 * 本来のベンチマークサーバはc4.xlarge(CPU 4コア、メモリ7.5GB)です
 * SSL証明書は自己署名のものを用意しています
-    * bench側もInsecureSkipVerityをtrueに変更しています
 * 1台構成で動作するように以下のファイルを書き換えています
     * /etc/hosts
     * /var/lib/cloud/scripts/per-instance/generate-env.sh
