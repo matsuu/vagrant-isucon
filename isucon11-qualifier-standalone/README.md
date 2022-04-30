@@ -25,6 +25,21 @@ isucon11予選とほぼ同じ環境を構築するためのVagrantfileです。
   ./bench -all-addresses 127.0.0.11 -target 127.0.0.11:3000 -jia-service-url http://127.0.0.1:4999
   ```
 
+## Apple Silicon
+
+QEMUを利用してApple Siliconで起動が可能です。
+
+```sh
+brew install qemu vagrant
+```
+
+反映するためterminal再起動。
+
+```sh
+vagrant plugin install vagrant-qemu
+vagrant up --provider qemu
+```
+
 ## 動作確認
 
 macOS + VirtualBox 6.1.26 + Vagrant 2.2.18で動作確認済です。

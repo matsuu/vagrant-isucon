@@ -1,7 +1,7 @@
 # -*- mode: ruby -*-
 # vi: set ft=ruby :
 
-box = "ubuntu/focal64"
+box = "generic/ubuntu2004"
 
 # All Vagrant configuration is done below. The "2" in Vagrant.configure
 # configures the configuration version (we support older styles for
@@ -63,6 +63,25 @@ Vagrant.configure("2") do |config|
   # information on available options.
   config.vm.provider "virtualbox" do |vb|
     vb.memory = "2048"
+  end
+
+  # https://github.com/ppggff/vagrant-qemu
+  config.vm.provider "qemu" do |qe|
+    qe.arch = "x86_64"
+    qe.cpu = "max"
+    qe.machine = "q35"
+    qe.net_device = "virtio-net-pci"
+
+    ## default: 4G
+    qe.memory = "2G"
+
+    ## default: 50022
+    #qe.ssh_port = "50022"
+
+    ## default: /opt/homebrew/share/qemu
+    #qe.qemu_dir = "/opt/homebrew/share/qemu"
+    ## for intel mac
+    #qe.qemu_dir = "/usr/local/share/qemu"
   end
 
   # Enable provisioning with a shell script. Additional provisioners such as
