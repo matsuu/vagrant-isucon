@@ -72,16 +72,13 @@ Vagrant.configure("2") do |config|
     qe.machine = "q35"
     qe.net_device = "virtio-net-pci"
 
+    ## default: 2
+    qe.smp = 4
     ## default: 4G
     qe.memory = "2G"
 
-    ## default: 50022
-    #qe.ssh_port = "50022"
-
     ## default: /opt/homebrew/share/qemu
-    #qe.qemu_dir = "/opt/homebrew/share/qemu"
-    ## for intel mac
-    #qe.qemu_dir = "/usr/local/share/qemu"
+    #qe.qemu_dir = "/usr/local/share/qemu" # for intel mac
   end
 
   # Enable provisioning with a shell script. Additional provisioners such as
