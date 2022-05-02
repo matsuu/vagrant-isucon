@@ -67,10 +67,11 @@ Vagrant.configure("2") do |config|
 
   # https://github.com/ppggff/vagrant-qemu
   config.vm.provider "qemu" do |qe|
-    qe.arch = "x86_64"
-    qe.cpu = "max"
-    qe.machine = "q35"
-    qe.net_device = "virtio-net-pci"
+    ## x86_64 emulation
+    #qe.arch = "x86_64"
+    #qe.cpu = "max"
+    #qe.machine = "q35"
+    #qe.net_device = "virtio-net-pci"
 
     ## default: 2
     #qe.smp = 2
@@ -97,7 +98,7 @@ Vagrant.configure("2") do |config|
 
     GITDIR="/tmp/isucon11-qualify"
     rm -rf ${GITDIR}
-    git clone --depth=1 https://github.com/isucon/isucon11-qualify.git ${GITDIR}
+    git clone --depth=1 -b aarch64 https://github.com/matsuu/isucon11-qualify.git ${GITDIR}
     (
       cd ${GITDIR}/provisioning/ansible
       # common
