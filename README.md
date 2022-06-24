@@ -4,36 +4,21 @@
 
 [ISUCON](http://isucon.net/)の過去問を構築するためのVagrantfileです。
 
-- ISUCON1
-- [ISUCON2](https://github.com/matsuu/vagrant-isucon/tree/master/isucon2)
-- [ISUCON3予選](https://github.com/matsuu/vagrant-isucon/tree/master/isucon3-qualifier)
-- ISUCON3本選
-- [ISUCON4予選](https://github.com/matsuu/vagrant-isucon/tree/master/isucon4-qualifier)
-- ISUCON4本選
-- [ISUCON5予選 2台構成](https://github.com/matsuu/vagrant-isucon/tree/master/isucon5-qualifier)
-- [ISUCON5予選 1台構成](https://github.com/matsuu/vagrant-isucon/tree/master/isucon5-qualifier-standalone)
-- [ISUCON5本選](https://github.com/matsuu/vagrant-isucon/tree/master/isucon5-final)
-- [ISUCON6予選 2台構成](https://github.com/matsuu/vagrant-isucon/tree/master/isucon6-qualifier)
-- [ISUCON6予選 1台構成](https://github.com/matsuu/vagrant-isucon/tree/master/isucon6-qualifier-standalone)
-- ISUCON6本選
-- [ISUCON7予選 2台構成](https://github.com/matsuu/vagrant-isucon/tree/master/isucon7-qualifier)
-- [ISUCON7予選 1台構成](https://github.com/matsuu/vagrant-isucon/tree/master/isucon7-qualifier-standalone)
-- ISUCON7本選
-- [ISUCON8予選 2台構成](https://github.com/matsuu/vagrant-isucon/tree/master/isucon8-qualifier)
-- [ISUCON8予選 1台構成](https://github.com/matsuu/vagrant-isucon/tree/master/isucon8-qualifier-standalone)
-- ISUCON8本選
-- [ISUCON9予選 1台構成](https://github.com/matsuu/vagrant-isucon/tree/master/isucon9-qualifier-standalone)
-- ISUCON9本選
-- [ISUCON10予選 1台構成](https://github.com/matsuu/vagrant-isucon/tree/master/isucon10-qualifier-standalone)
-- [ISUCON10本選 1台構成](https://github.com/matsuu/vagrant-isucon/tree/master/isucon10-final-standalone)
-- [ISUCON11予選 1台構成](https://github.com/matsuu/vagrant-isucon/tree/master/isucon11-qualifier-standalone)
-- [ISUCON11本選 1台構成](https://github.com/matsuu/vagrant-isucon/tree/master/isucon11-final-standalone)
+| 回 | 予選 | 本選 |
+| --- | --- | --- |
+| ISUCON1 | x | TBD |
+| ISUCON2 | x | [1台構成](https://github.com/matsuu/vagrant-isucon/tree/master/isucon2) |
+| ISUCON3 | [1台構成](https://github.com/matsuu/vagrant-isucon/tree/master/isucon3-qualifier) | TBD |
+| ISUCON4 | [1台構成](https://github.com/matsuu/vagrant-isucon/tree/master/isucon4-qualifier) | TBD |
+| ISUCON5 | [1台構成](https://github.com/matsuu/vagrant-isucon/tree/master/isucon5-qualifier-standalone) [2台構成](https://github.com/matsuu/vagrant-isucon/tree/master/isucon5-qualifier) | [3台構成](https://github.com/matsuu/vagrant-isucon/tree/master/isucon5-final) |
+| ISUCON6 | [1台構成](https://github.com/matsuu/vagrant-isucon/tree/master/isucon6-qualifier-standalone) [2台構成](https://github.com/matsuu/vagrant-isucon/tree/master/isucon6-qualifier) | TBD |
+| ISUCON7 | [1台構成](https://github.com/matsuu/vagrant-isucon/tree/master/isucon7-qualifier-standalone) [2台構成](https://github.com/matsuu/vagrant-isucon/tree/master/isucon7-qualifier) [VagrantBox](https://app.vagrantup.com/matsuu/boxes/isucon7-qualifier) | TBD |
+| ISUCON8 | [1台構成](https://github.com/matsuu/vagrant-isucon/tree/master/isucon8-qualifier-standalone) [2台構成](https://github.com/matsuu/vagrant-isucon/tree/master/isucon8-qualifier) | TBD |
+| ISUCON9 | [1台構成](https://github.com/matsuu/vagrant-isucon/tree/master/isucon9-qualifier-standalone) | TBD |
+| ISUCON10 | [1台構成](https://github.com/matsuu/vagrant-isucon/tree/master/isucon10-qualifier-standalone) | [1台構成](https://github.com/matsuu/vagrant-isucon/tree/master/isucon10-final-standalone) |
+| ISUCON11 | [1台構成](https://github.com/matsuu/vagrant-isucon/tree/master/isucon11-qualifier-standalone) | [1台構成](https://github.com/matsuu/vagrant-isucon/tree/master/isucon11-final-standalone) |
 
 サーバ内の構築にはAnsibleを使っています。Ansibleのplaybookのみ必要な場合は[matsuu/ansible-isucon](https://github.com/matsuu/ansible-isucon)をどうぞ。
-
-### Vagrant box
-
-- [ISUCON7予選](https://app.vagrantup.com/matsuu/boxes/isucon7-qualifier)
 
 ### Others
 
@@ -46,17 +31,3 @@
 ## License
 
 MIT
-
-## TODO
-
-- ISUCON1のVagrantfileを作る
-- ~~ISUCON2のVagrantfileを作る~~
-- ISUCON3本選のVagrantfileを作る
-- ISUCON4本選のVagrantfileを作る
-- ISUCON6本選のVagrantfileを作る
-- ISUCON7本選のVagrantfileを作る
-- ISUCON8本選のVagrantfileを作る
-- ISUCON9本選のVagrantfileを作る
-- ~~ISUCON10本選のVagrantfileを作る~~
-- ~~Vagrant boxを作成して配布する~~
-- 英語化
