@@ -1,0 +1,146 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+box = "generic/ubuntu2204"
+
+# All Vagrant configuration is done below. The "2" in Vagrant.configure
+# configures the configuration version (we support older styles for
+# backwards compatibility). Please don't change it unless you know what
+# you're doing.
+Vagrant.configure("2") do |config|
+  # The most common configuration options are documented and commented below.
+  # For a complete reference, please see the online documentation at
+  # https://docs.vagrantup.com.
+
+  # Every Vagrant development environment requires a box. You can search for
+  # boxes at https://vagrantcloud.com/search.
+  config.vm.box = box
+
+  # Disable automatic box update checking. If you disable this, then
+  # boxes will only be checked for updates when the user runs
+  # `vagrant box outdated`. This is not recommended.
+  # config.vm.box_check_update = false
+
+  # Create a forwarded port mapping which allows access to a specific port
+  # within the machine from a port on the host machine. In the example below,
+  # accessing "localhost:8080" will access port 80 on the guest machine.
+  # NOTE: This will enable public access to the opened port
+  # config.vm.network "forwarded_port", guest: 80, host: 8080
+
+  # Create a forwarded port mapping which allows access to a specific port
+  # within the machine from a port on the host machine and only allow access
+  # via 127.0.0.1 to disable public access
+  # config.vm.network "forwarded_port", guest: 80, host: 8080, host_ip: "127.0.0.1"
+
+  # Create a private network, which allows host-only access to the machine
+  # using a specific IP.
+  # config.vm.network "private_network", ip: "192.168.33.10"
+
+  # Create a public network, which generally matched to bridged network.
+  # Bridged networks make the machine appear as another physical device on
+  # your network.
+  # config.vm.network "public_network"
+
+  # Share an additional folder to the guest VM. The first argument is
+  # the path on the host to the actual folder. The second argument is
+  # the path on the guest to mount the folder. And the optional third
+  # argument is a set of non-required options.
+  # config.vm.synced_folder "../data", "/vagrant_data"
+
+  # Provider-specific configuration so you can fine-tune various
+  # backing providers for Vagrant. These expose provider-specific options.
+  # Example for VirtualBox:
+  #
+  # config.vm.provider "virtualbox" do |vb|
+  #   # Display the VirtualBox GUI when booting the machine
+  #   vb.gui = true
+  #
+  #   # Customize the amount of memory on the VM:
+  #   vb.memory = "1024"
+  # end
+  #
+  # View the documentation for the provider you are using for more
+  # information on available options.
+  config.vm.provider "virtualbox" do |vb|
+    vb.memory = "2048"
+  end
+
+  # https://github.com/ppggff/vagrant-qemu
+  config.vm.provider "qemu" do |qe|
+    qe.arch = "x86_64"
+    qe.cpu = "max"
+    qe.machine = "q35"
+    qe.net_device = "virtio-net-pci"
+
+    ## default: 4G
+    qe.memory = "2G"
+
+    ## default: 50022
+    #qe.ssh_port = "50022"
+
+    ## default: /opt/homebrew/share/qemu
+    #qe.qemu_dir = "/opt/homebrew/share/qemu"
+    ## for intel mac
+    #qe.qemu_dir = "/usr/local/share/qemu"
+  end
+
+  # Enable provisioning with a shell script. Additional provisioners such as
+  # Ansible, Chef, Docker, Puppet and Salt are also available. Please see the
+  # documentation for more information about their specific syntax and use.
+  # config.vm.provision "shell", inline: <<-SHELL
+  #   apt-get update
+  #   apt-get install -y apache2
+  # SHELL
+
+  config.vm.provision "shell", inline: <<-SHELL
+    set -ex
+
+    GITDIR="/tmp/isucon12-qualify"
+    MYARCH=`uname -m`
+
+    export DEBIAN_FRONTEND=noninteractive
+    apt-get update
+    apt-get install -y --no-install-recommends curl gcc git golang libc6-dev make
+
+    rm -rf ${GITDIR}
+    git clone --depth=1 https://github.com/isucon/isucon12-qualify.git ${GITDIR}
+    (
+      cd ${GITDIR}/bench
+      make
+    )
+    (
+      cd ${GITDIR}/blackauth
+      go build -o ../provisioning/mitamae/cookbooks/blackauth/blackauth .
+    )
+    (
+      cd ${GITDIR}/provisioning/mitamae
+      curl -L https://github.com/itamae-kitchen/mitamae/releases/download/v1.13.0/mitamae-${MYARCH}-linux.tar.gz | tar xvz
+
+      sed -i -e "s/x86_64/${MYARCH}/" cookbooks/users/isucon.rb
+      sed -i -e "s/192\.168/127.0/" cookbooks/common/default.rb
+      if [ "${MYARCH}" != "x86_64" ] ; then
+        sed -i -e "s/mysql-client/default-mysql-client/" ${GITDIR}/webapp/*/Dockerfile
+      fi
+
+      ./mitamae-${MYARCH}-linux local roles/default.rb
+
+      rsync -a ${GITDIR}/webapp/ /home/isucon/webapp/
+      rsync -a ${GITDIR}/public/ /home/isucon/public/
+      rsync -a ${GITDIR}/bench/ /home/isucon/bench/
+      rsync -a ${GITDIR}/data/ /home/isucon/data/
+      curl -sL https://github.com/isucon/isucon12-qualify/releases/download/data%2F20220712_1505-745a3fdfb5783afc048ecaebd054acd20151872d/initial_data.tar.gz | tar zxC /home/isucon/
+      chown -R isucon:isucon /home/isucon
+
+      mysql -u root -p -e "ALTER USER 'root'@'localhost' IDENTIFIED WITH mysql_native_password BY 'root';"
+      cat /home/isucon/webapp/sql/admin/*.sql | mysql -uroot -proot
+      ./mitamae-${MYARCH}-linux local roles/webapp.rb
+      sudo -u isucon /home/isucon/webapp/sql/init.sh
+      systemctl start isuports
+      systemctl start blackauth
+      systemctl restart nginx
+    )
+    rm -rf ${GITDIR}
+    apt-get purge -y golang
+    apt-get autoremove -y
+  SHELL
+end
