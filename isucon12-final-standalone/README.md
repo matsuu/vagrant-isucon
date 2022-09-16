@@ -35,7 +35,7 @@ VMWare Desktopでも動作するかもしれませんが未確認です。
 
 [トップのFAQ](../README.md#FAQ)も合わせてご確認ください
 
-### ベンチマークを回すとinitalizeでエラーになる
+### 初期状態でベンチマークのスコアが0になる
 
 ```
 22:12:10.213976 [INITIALIZATION_ERR] prepare: timeout: initialize-error-invalid-req: timeout: Post "http://127.0.0.1/initialize": context deadline exceeded
