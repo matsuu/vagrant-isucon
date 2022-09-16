@@ -28,7 +28,7 @@ Mac OS X + VirtualBox 5.0.28 + Vagrant 1.8.6で動作確認済です。
 
 ## FAQ
 
-[トップのFAQ](../README.md)も合わせてご確認ください
+[トップのFAQ](../README.md#FAQ)も合わせてご確認ください
 
 ### プログラムの動かし方がわからない
 

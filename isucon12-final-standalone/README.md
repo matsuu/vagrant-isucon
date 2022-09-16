@@ -33,7 +33,7 @@ VMWare Desktopでも動作するかもしれませんが未確認です。
 
 ## FAQ
 
-[トップのFAQ](../README.md)も合わせてご確認ください
+[トップのFAQ](../README.md#FAQ)も合わせてご確認ください
 
 ### ベンチマークを回すとinitalizeでエラーになる
 
