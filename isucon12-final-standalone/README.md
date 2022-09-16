@@ -33,6 +33,8 @@ VMWare Desktopでも動作するかもしれませんが未確認です。
 
 ## FAQ
 
+[トップのFAQ](../README.md)も合わせてご確認ください
+
 ### ベンチマークを回すとinitalizeでエラーになる
 
 ```
@@ -51,12 +53,6 @@ MySQLのチューニングを行うか、ベンチマーク実行時の `--initi
 
 - [ISUCON12本選問題](https://github.com/isucon/isucon12-final)
 
-### ブラウザで動作確認ができない
-
-Vagrantfileのネットワーク設定がデフォルトのままなので、サーバに割り当てられたIPアドレスにブラウザでアクセスしてみてください。
-よくわからない場合は`# config.vm.network "private_network", ip: "192.168.33.10"`のコメントを外してブラウザから192.168.33.10にアクセスしてみてください。
-
 ### Vagrantがない環境で試したい
 
-本家でprovisioning用にansibleが用意されています。
 [isucon/isucon12-final](https://github.com/isucon/isucon12-final)をご利用ください。
