@@ -17,7 +17,7 @@
 | ISUCON9 | [1台構成](https://github.com/matsuu/vagrant-isucon/tree/master/isucon9-qualifier-standalone) | TBD |
 | ISUCON10 | [1台構成](https://github.com/matsuu/vagrant-isucon/tree/master/isucon10-qualifier-standalone) | [1台構成](https://github.com/matsuu/vagrant-isucon/tree/master/isucon10-final-standalone) |
 | ISUCON11 | [1台構成](https://github.com/matsuu/vagrant-isucon/tree/master/isucon11-qualifier-standalone) | [1台構成](https://github.com/matsuu/vagrant-isucon/tree/master/isucon11-final-standalone) |
-| ISUCON12 | [1台構成](https://github.com/matsuu/vagrant-isucon/tree/master/isucon12-qualifier-standalone) | |
+| ISUCON12 | [1台構成](https://github.com/matsuu/vagrant-isucon/tree/master/isucon12-qualifier-standalone) | [1台構成](https://github.com/matsuu/vagrant-isucon/tree/master/isucon12-final-standalone) |
 
 サーバ内の構築にはAnsibleを使っています。Ansibleのplaybookのみ必要な場合は[matsuu/ansible-isucon](https://github.com/matsuu/ansible-isucon)をどうぞ。
 
