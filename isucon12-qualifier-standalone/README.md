@@ -30,6 +30,7 @@ VMWare Desktopでも動作するかもしれませんが未確認です。
 ## 本来の設定と異なるところ
 
 * 本来のサーバはc5.large(CPU 2コア、メモリ4GB)の3台構成です
+* 本番ではドメインとして `*.t.isucon.dev` が使われていましたが、[devトップレベルドメインはHSTS preload-listに含まれており](https://ja.wikipedia.org/wiki/.dev)、正規のSSL証明書がないとアクセスできないため `*.t.isucon.local` に書き換えています
 * SSL証明書は自己署名のものを用意しています
 * 1台構成で動作するように以下のファイルを書き換えています
     * /etc/hosts
