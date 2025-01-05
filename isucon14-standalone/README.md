@@ -23,8 +23,10 @@ isucon14とほぼ同じ環境を構築するためのVagrantfileです。
 
 ## 動作確認
 
-macOS(intel) + VirtualBox 7.1.4 + Vagrant 2.4.2で動作確認済です。
-VMWare Desktopでも動作するかもしれませんが未確認です。
+以下の環境で動作確認済です。
+
+* macOS(Intel) + VirtualBox 7.1.4 + Vagrant 2.4.2
+* macOS(AppleSilicon) + VMware Fusion 13.6.2 + Vagrant 2.4.3
 
 ## 本来の設定と異なるところ
 

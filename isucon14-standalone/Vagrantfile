@@ -97,6 +97,8 @@ Vagrant.configure("2") do |config|
     rm -rf ${GITDIR}
     git clone --depth=1 https://github.com/isucon/isucon14.git ${GITDIR}
 
+    # amd64以外でも動作するように
+    sed -i -e "/go-install/s/$/ `uname -s | tr 'A-Z' 'a-z'` `dpkg --print-architecture`/" ${GITDIR}/provisioning/ansible/roles/xbuild/tasks/main.yml
     sed -i -e "s/_linux_amd64//" ${GITDIR}/provisioning/ansible/roles/bench/tasks/main.yaml
     sed -i -e "/isuadmin-user/d" -e "/envcheck/d" ${GITDIR}/provisioning/ansible/application.yml
     mkdir -p /etc/ssh/sshd_config.d
